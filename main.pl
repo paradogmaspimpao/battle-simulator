@@ -8,22 +8,44 @@ superEffective(ghost,ghost).
 ineffective(ghost,normal).
 ineffective(normal,ghost).
 
+notVeryEffective(water,grass).
+notVeryEffective(fire,water).
+notVeryEffective(grass,fire).
+
 normalEffective(normal,fire).
 normalEffective(normal,water).
 normalEffective(normal,grass).
 normalEffective(ghost,fire).
 normalEffective(ghost,water).
 normalEffective(ghost,grass).
+normalEffective(fire,ghost).
+normalEffective(fire,normal).
+normalEffective(water,ghost).
+normalEffective(water,normal).
+normalEffective(grass,ghost).
+normalEffective(grass,normal).
 
-normalEffective(X,X):- dif(X,ghost).
+notVeryEffective(X,X):- dif(X,ghost).
+
+attack(Human,Computer, 'You\'re super effective'):- superEffective(Human,Computer).
+attack(Human,Computer, 'You\'re normally effective'):- normalEffective(Human,Computer).
+attack(Human,Computer, 'You\'re not very effective'):- notVeryEffective(Human,Computer).
+attack(Human,Computer, 'You\'re ineffevtive'):- ineffective(Human,Computer).
+
+defend(Human,Computer, 'It\'s super effective'):- superEffective(Computer,Human).
+defend(Human,Computer, 'It\'s normally effective'):- normalEffective(Computer,Human).
+defend(Human,Computer, 'It\'s not very effective'):- notVeryEffective(Computer,Human).
+defend(Human,Computer, 'It\'s ineffevtive'):- ineffective(Computer,Human).
 
 
 
 main :-
-         random_member(C, [fire, grass, water, normal, ghost]),
-         read(Op),
-         write('You chose '), writeln(Op),
-         write('The computer chose '), writeln(C).
+         random_member(Computer, [fire, grass, water, normal, ghost]),
+         read(Human),
+         attack(Human,Computer,AtkMsg),
+         defend(Human,Computer,DefMsg),
+         write('You chose '), write(Human),write('. '), writeln(AtkMsg),
+         write('The computer chose '), write(Computer),write('. '), writeln(DefMsg).
 
          
     
