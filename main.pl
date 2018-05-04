@@ -27,25 +27,51 @@ normalEffective(grass,normal).
 
 notVeryEffective(X,X):- dif(X,ghost).
 
-attack(Human,Computer, 'You\'re super effective'):- superEffective(Human,Computer).
-attack(Human,Computer, 'You\'re normally effective'):- normalEffective(Human,Computer).
-attack(Human,Computer, 'You\'re not very effective'):- notVeryEffective(Human,Computer).
-attack(Human,Computer, 'You\'re ineffevtive'):- ineffective(Human,Computer).
+attack(Human,Computer, 'You\'re super effective', 4):- superEffective(Human,Computer).
+attack(Human,Computer, 'You\'re normally effective',3):- normalEffective(Human,Computer).
+attack(Human,Computer, 'You\'re not very effective',2):- notVeryEffective(Human,Computer).
+attack(Human,Computer, 'You\'re ineffevtive',1):- ineffective(Human,Computer).
 
-defend(Human,Computer, 'It\'s super effective'):- superEffective(Computer,Human).
-defend(Human,Computer, 'It\'s normally effective'):- normalEffective(Computer,Human).
-defend(Human,Computer, 'It\'s not very effective'):- notVeryEffective(Computer,Human).
-defend(Human,Computer, 'It\'s ineffevtive'):- ineffective(Computer,Human).
+defend(Human,Computer, 'It\'s super effective',4):- superEffective(Computer,Human).
+defend(Human,Computer, 'It\'s normally effective',3):- normalEffective(Computer,Human).
+defend(Human,Computer, 'It\'s not very effective',2):- notVeryEffective(Computer,Human).
+defend(Human,Computer, 'It\'s ineffevtive',1):- ineffective(Computer,Human).
 
+battle(Human,Computer, 'The opponent faints! You win!'):-
+        attack(Human,Computer,AtkMsg, AtkNum),
+        defend(Human,Computer,DefMsg,DefNum),
+        AtkNum > DefNum,!,
+        write('You chose '), write(Human),write('. '), writeln(AtkMsg),
+        write('The opponent chose '), write(Computer),write('. '), writeln(DefMsg).
+   
+battle(Human,Computer, 'You faint! You lose!'):-
+        attack(Human,Computer,AtkMsg, AtkNum),
+        defend(Human,Computer,DefMsg,DefNum),
+        AtkNum < DefNum,!,
+        write('You chose '), write(Human),write('. '), writeln(AtkMsg),
+        write('The opponent chose '), write(Computer),write('. '), writeln(DefMsg).
+
+battle(Human,Computer, 'Both stay fit to fight! It\'s a Tie!'):-
+        attack(Human,Computer,AtkMsg, AtkNum),
+        defend(Human,Computer,DefMsg,DefNum),
+        AtkNum == DefNum, dif(AtkNum,4), !,
+        write('You chose '), write(Human),write('. '), writeln(AtkMsg),
+        write('The opponent chose '), write(Computer),write('. '), writeln(DefMsg).
+
+        
+battle(Human,Computer, 'Both knocked out! It\'s a Tie!'):-
+        attack(Human,Computer,AtkMsg, AtkNum),
+        defend(Human,Computer,DefMsg,DefNum),
+        AtkNum == DefNum, AtkNum == 4, !,
+        write('You chose '), write(Human),write('. '), writeln(AtkMsg),
+        write('The opponent chose '), write(Computer),write('. '), writeln(DefMsg).
 
 
 main :-
-         random_member(Computer, [fire, grass, water, normal, ghost]),
-         read(Human),
-         attack(Human,Computer,AtkMsg),
-         defend(Human,Computer,DefMsg),
-         write('You chose '), write(Human),write('. '), writeln(AtkMsg),
-         write('The computer chose '), write(Computer),write('. '), writeln(DefMsg).
+        random_member(Computer, [fire, grass, water, normal, ghost]),
+        read(Human),
+        battle(Human,Computer,Result),
+        writeln(Result).
 
          
     
