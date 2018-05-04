@@ -1,6 +1,8 @@
 %% arquivo principal da aplicacao
+:- use_module(library(random)).
 
-
-%% menu de instalacao de um pacote
-readInput :- write('Digite o nome do pacote: '), read(Package), 
-write(Package).
+main :-
+    random_between(1, 3, Opcao),
+    write(Opcao).
+    
+    
