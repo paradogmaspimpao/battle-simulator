@@ -1,8 +1,30 @@
 %% arquivo principal da aplicacao
-:- use_module(library(random)).
+
+superEffective(fire,grass).
+superEffective(grass,water).
+superEffective(water,fire).
+superEffective(ghost,ghost).
+
+ineffective(ghost,normal).
+ineffective(normal,ghost).
+
+normalEffective(normal,fire).
+normalEffective(normal,water).
+normalEffective(normal,grass).
+normalEffective(ghost,fire).
+normalEffective(ghost,water).
+normalEffective(ghost,grass).
+
+normalEffective(X,X):- dif(X,ghost).
+
+
 
 main :-
-    random_between(1, 3, Opcao),
-    write(Opcao).
+         random_member(C, [fire, grass, water, normal, ghost]),
+         read(Op),
+         write('You chose '), writeln(Op),
+         write('The computer chose '), writeln(C).
+
+         
     
     
